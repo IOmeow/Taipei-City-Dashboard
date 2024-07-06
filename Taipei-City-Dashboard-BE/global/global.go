@@ -60,6 +60,9 @@ var (
 		DBName:   getEnv("DB_DASHBOARD_DBNAME", "dashboard"),
 	}
 
+	// this use the airflow data 
+	
+
 	// only used in the init function.
 	PostgresManagerSampleDataFile = getEnv("MANAGER_SAMPLE_FILE", "dashboardmanager-demo.sql")
     PostgresDashboardSampleDataFile = getEnv("DASHBOARD_SAMPLE_FILE", "dashboard-demo.sql")

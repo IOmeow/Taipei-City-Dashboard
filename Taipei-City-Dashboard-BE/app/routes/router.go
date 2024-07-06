@@ -69,7 +69,16 @@ func configureUserRoutes() {
 		userRoutes.PATCH("/:id", controllers.UpdateUserByID)
 	}
 }
+func configureParkingRoutes(){
+	parkingRoutes := RouterGroup.Group("/parking")
 
+	parkingRoutes.Use(middleware.LimitAPIRequests(global.ParkingLimitAPIRequestsTimes, global.LimitRequestsDuration))
+	parkingRoutes.Use(middleware.LimitTotalRequests(global.ParkingLimitTotalRequestsTimes, global.TokenExpirationDuration))
+	{
+		parkingRoutes.GET("/", controllers.GetAllParkingData) // api to get all parking data 
+	}
+	
+}
 // configureComponentRoutes configures all component routes.
 func configureComponentRoutes() {
 	componentRoutes := RouterGroup.Group("/component")

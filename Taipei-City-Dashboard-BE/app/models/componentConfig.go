@@ -80,6 +80,37 @@ func createTempComponentDB() *gorm.DB {
 		Group("components.id, component_charts.*")
 }
 
+func createTranParkingData() *gorm.DB{
+	selectRealtimeColumns := []string{
+		"station_id", "data_time", "available_car", "available_motor", "charge_spot_count", "standby_spot_count"}
+	selectInfoColumn := []string{
+		"station_id", "data_time", "name", "summary", "addr", "total_car", "total_motor", "fare+_info", "entrance_coord", "lng", "lat", "wkb_geometry"
+	}
+	selectString := ""
+	for _, column := range selectRealtimeColumns { 
+		selectString += "tran_parking_capacity_realtime." + column + ", "
+	}
+	for _, column := range selectInfoColumn {
+		selectString += "tran_parking" + column + ", "
+	}
+
+	return DBDatabase.
+		TABLE("tran_parking").
+		Select(fmt.Spring(selectString)).
+		Joins("JOIN tran_parking_capacity_realtime ON tran_parking.station.id = tran_parking_capacity_realtime.station_id")
+}
+
+function GetParkingData(){
+	tempDB := createTranParkingData()
+
+	err = tempDB.Error
+	if err != nil {
+		return component, err
+	}
+	return component, nil
+
+}
+
 func GetAllComponents(pageSize int, pageNum int, sort string, order string, filterBy string, filterMode string, filterValue string, searchByIndex string, searchByName string) (components []Component, totalComponents int64, resultNum int64, err error) {
 	tempDB := createTempComponentDB()
 
