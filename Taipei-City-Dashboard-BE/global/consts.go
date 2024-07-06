@@ -29,6 +29,8 @@ const (
 	ContributorLimitTotalRequestsTimes = 500
 	DashboardLimitAPIRequestsTimes     = 200
 	DashboardLimitTotalRequestsTimes   = 1000
+	ParkingLimitAPIRequestsTimes     = 200
+	ParkingLimitTotalRequestsTimes   = 1000
 	IssueLimitAPIRequestsTimes         = 20
 	IssueLimitTotalRequestsTimes       = 200
 	LimitRequestsDuration              = 60 * time.Second

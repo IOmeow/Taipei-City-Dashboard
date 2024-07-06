@@ -78,7 +78,7 @@ func GetAllComponents(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "success", "total": totalComponents, "results": resultNum, "data": components})
 }
 
-function GetAllParkingData(c *gin.Context){
+func GetAllParkingData(c *gin.Context){
 
 	// Find all parking data 
 	parkingData, err := models.GetAllParkingData()
@@ -88,7 +88,7 @@ function GetAllParkingData(c *gin.Context){
 	}
 
 	// Return the parking data 
-	c.JSON(http.StatusOK, gin.H("status": "success", "data": parkingData))
+	c.JSON(http.StatusOK, gin.H{"status": "success", "data": parkingData})
 }	
 /*
 GetComponentByID retrieves a public component from the database by ID.

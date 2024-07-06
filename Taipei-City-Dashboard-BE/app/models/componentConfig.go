@@ -75,7 +75,6 @@ type ParkingData struct {
 	TotalMotor float64   `json: "total_motor" gorm: "total_motor;      type:double precision; not null"`
 	FareInfo  string     `json: "fare_info"  gorm: "column:fare_info;  type:text;      not null"`
 	EntranceCoord  string     `json: "entrance_coord"  gorm: "column:entrance_coord; type:text; not null"`
-	FareInfo  string     `json: "fare_info"  gorm: "column:fare_info;  type:text;      not null"`
 	Lng       float64    `json: "lng"        gorm: "column:lng;        type:double precision; not null"`
 	Lat       float64    `json: "lat"        gorm: "column:lng;        type:double precision; not null"`
 }
@@ -87,8 +86,7 @@ func createTranParkingData() *gorm.DB{
 	selectRealtimeColumns := []string{
 		"station_id", "data_time", "available_car", "available_motor", "charge_spot_count", "standby_spot_count"}
 	selectInfoColumn := []string{
-		"station_id", "data_time", "name", "summary", "addr", "total_car", "total_motor", "fare_info", "entrance_coord", "lng", "lat"
-	}
+		"station_id", "data_time", "name", "summary", "addr", "total_car", "total_motor", "fare_info", "entrance_coord", "lng", "lat"}
 	selectString := ""
 	for _, column := range selectRealtimeColumns { 
 		selectString += "tran_parking_capacity_realtime." + column + ", "
@@ -97,18 +95,18 @@ func createTranParkingData() *gorm.DB{
 		selectString += "tran_parking" + column + ", "
 	}
 
-	return DBDatabase.
-		TABLE("tran_parking").
-		Select(fmt.Spring(selectString)).
+	return DBDashboard.
+		Table("tran_parking").
+		Select(fmt.Sprint(selectString)).
 		Joins("JOIN tran_parking_capacity_realtime ON tran_parking.station.id = tran_parking_capacity_realtime.station_id")
 }
 
-func GetParkingData() (parkingData ParkingData, err Error){
+func GetAllParkingData() (parkingData ParkingData, err error){
 	tempDB := createTranParkingData()
 
 	err = tempDB.Error
 	if err != nil {
-		return , err
+		return parkingData, err
 	}
 	return parkingData, nil
 }

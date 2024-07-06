@@ -142,7 +142,8 @@ func checkPostgreSQLClient() error {
 
 // ExecuteSQLFile executes SQL file using psql
 func executeSQLFile(dbConfig global.DatabaseConfig, filePath string) error {
-	cmd := exec.Command("psql", "-h", dbConfig.Host, "-p", dbConfig.Port, "-U", dbConfig.User, "-d", dbConfig.DBName, "-f", filePath)
+	cmd := exec.Command("psql", "-h", dbConfig.Host, "-p", dbConfig.Port, "-U", dbConfig.User, "-d", dbConfig.DBName)
+	// cmd := exec.Command("psql", "-h", dbConfig.Host, "-p", dbConfig.Port, "-U", dbConfig.User, "-d", dbConfig.DBName, "-f", filePath)
 	// cmd.Stdin = strings.NewReader(dbConfig.Password + "\n")
 
 	err := cmd.Run()
