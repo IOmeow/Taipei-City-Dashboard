@@ -81,14 +81,14 @@ func GetAllComponents(c *gin.Context) {
 function GetAllParkingData(c *gin.Context){
 
 	// Find all parking data 
-	component, err := models.GetAllParkingData()
+	parkingData, err := models.GetAllParkingData()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "message": err.Error()})
 		return
 	}
 
 	// Return the parking data 
-	c.JSON(http.StatusOK, gin.H("status": "success", "data": component))
+	c.JSON(http.StatusOK, gin.H("status": "success", "data": parkingData))
 }	
 /*
 GetComponentByID retrieves a public component from the database by ID.
