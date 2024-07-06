@@ -62,6 +62,58 @@ type ComponentChart struct {
 
 /* ----- Handlers ----- */
 
+type ParkingData struct {
+	StationId int64      `json: "station_id" gorm: "column:station_id; type:varchar[]"`
+	DataTime  string     `json: "data_time"  gorm: "column:data_time;  type:timestamp; not null"`
+	AvailableCar float64   `json: "available_car" gorm: "column:available_car; type:double precision;"`
+	AvailableMotor float64   `json: "available_motor" gorm: "column:available_motor; type:double precision;"`
+	ChargeSpotCount float64   `json: "charge_spot_count" gorm: "column:charge_spot_count; type:double precision; not null"`
+	StandByCountCount float64 `json: "standby_spot_count gorm: "column:standby_spot_count; type:double precision; not null"`
+	Name      string     `json: "name"       gorm: "column:name;       type:varchar[]; not null"`
+	Summary   string     `json: "summary"    gorm: "column:summary;    type:text;      not null"`
+	Addr      string     `json: "addr"       gorm: "column:addr;       type:text;      not null"`
+	TotalMotor float64   `json: "total_motor" gorm: "total_motor;      type:double precision; not null"`
+	FareInfo  string     `json: "fare_info"  gorm: "column:fare_info;  type:text;      not null"`
+	EntranceCoord  string     `json: "entrance_coord"  gorm: "column:entrance_coord; type:text; not null"`
+	FareInfo  string     `json: "fare_info"  gorm: "column:fare_info;  type:text;      not null"`
+	Lng       float64    `json: "lng"        gorm: "column:lng;        type:double precision; not null"`
+	Lat       float64    `json: "lat"        gorm: "column:lng;        type:double precision; not null"`
+}
+
+/* ----- Handlers ----- */
+
+// createTranParkingData: get the data from DBDatabase with parking data from tran_parking and tran_parking_apacity_realtime 
+func createTranParkingData() *gorm.DB{
+	selectRealtimeColumns := []string{
+		"station_id", "data_time", "available_car", "available_motor", "charge_spot_count", "standby_spot_count"}
+	selectInfoColumn := []string{
+		"station_id", "data_time", "name", "summary", "addr", "total_car", "total_motor", "fare_info", "entrance_coord", "lng", "lat"
+	}
+	selectString := ""
+	for _, column := range selectRealtimeColumns { 
+		selectString += "tran_parking_capacity_realtime." + column + ", "
+	}
+	for _, column := range selectInfoColumn {
+		selectString += "tran_parking" + column + ", "
+	}
+
+	return DBDatabase.
+		TABLE("tran_parking").
+		Select(fmt.Spring(selectString)).
+		Joins("JOIN tran_parking_capacity_realtime ON tran_parking.station.id = tran_parking_capacity_realtime.station_id")
+}
+
+func GetParkingData() (parkingData ParkingData, err Error){
+	tempDB := createTranParkingData()
+
+	err = tempDB.Error
+	if err != nil {
+		return , err
+	}
+	return parkingData, nil
+}
+
+
 // createTempComponentDB joins the components, component_maps, and component_charts tables and selects the columns to return.
 func createTempComponentDB() *gorm.DB {
 	// Columns to select from the components table
@@ -80,36 +132,7 @@ func createTempComponentDB() *gorm.DB {
 		Group("components.id, component_charts.*")
 }
 
-func createTranParkingData() *gorm.DB{
-	selectRealtimeColumns := []string{
-		"station_id", "data_time", "available_car", "available_motor", "charge_spot_count", "standby_spot_count"}
-	selectInfoColumn := []string{
-		"station_id", "data_time", "name", "summary", "addr", "total_car", "total_motor", "fare+_info", "entrance_coord", "lng", "lat", "wkb_geometry"
-	}
-	selectString := ""
-	for _, column := range selectRealtimeColumns { 
-		selectString += "tran_parking_capacity_realtime." + column + ", "
-	}
-	for _, column := range selectInfoColumn {
-		selectString += "tran_parking" + column + ", "
-	}
 
-	return DBDatabase.
-		TABLE("tran_parking").
-		Select(fmt.Spring(selectString)).
-		Joins("JOIN tran_parking_capacity_realtime ON tran_parking.station.id = tran_parking_capacity_realtime.station_id")
-}
-
-function GetParkingData(){
-	tempDB := createTranParkingData()
-
-	err = tempDB.Error
-	if err != nil {
-		return component, err
-	}
-	return component, nil
-
-}
 
 func GetAllComponents(pageSize int, pageNum int, sort string, order string, filterBy string, filterMode string, filterValue string, searchByIndex string, searchByName string) (components []Component, totalComponents int64, resultNum int64, err error) {
 	tempDB := createTempComponentDB()
