@@ -12,6 +12,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@ar-js-org/ar.js": "^3.4.5",
 		"@deck.gl/core": "^9.0.9",
 		"@deck.gl/layers": "^9.0.9",
 		"@deck.gl/mapbox": "^9.0.9",
