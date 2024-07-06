@@ -86,7 +86,8 @@ func createTranParkingData() *gorm.DB{
 	selectRealtimeColumns := []string{
 		"station_id", "data_time", "available_car", "available_motor", "charge_spot_count", "standby_spot_count"}
 	selectInfoColumn := []string{
-		"station_id", "data_time", "name", "summary", "addr", "total_car", "total_motor", "fare_info", "entrance_coord", "lng", "lat"}
+		 "name", "summary", "addr", "total_car", "total_motor", "fare_info", "entrance_coord", "lng", "lat"
+	}
 	selectString := ""
 	for _, column := range selectRealtimeColumns { 
 		selectString += "tran_parking_capacity_realtime." + column + ", "
@@ -98,15 +99,17 @@ func createTranParkingData() *gorm.DB{
 	return DBDashboard.
 		Table("tran_parking").
 		Select(fmt.Sprint(selectString)).
-		Joins("JOIN tran_parking_capacity_realtime ON tran_parking.station.id = tran_parking_capacity_realtime.station_id")
+		Joins("JOIN tran_parking_capacity_realtime ON tran_parking.station_id = tran_parking_capacity_realtime.station_id").
+		Group(fmt.Sprint(selectString)).
+		Order("tran_parking_capacity_realtime.station_id")
 }
 
-func GetAllParkingData() (parkingData ParkingData, err error){
+func GetParkingData() (parkingData ParkingData, err Error){
 	tempDB := createTranParkingData()
 
 	err = tempDB.Error
 	if err != nil {
-		return parkingData, err
+		return , err
 	}
 	return parkingData, nil
 }
