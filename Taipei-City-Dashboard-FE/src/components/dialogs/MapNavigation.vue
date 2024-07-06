@@ -1,10 +1,10 @@
 <!-- Developed by Taipei Urban Intelligence Center 2023-2024-->
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useMapStore } from "../../store/mapStore";
 import { useDialogStore } from "../../store/dialogStore";
-import { useAuthStore } from "../../store/authStore";
+// import { useAuthStore } from "../../store/authStore";
 import axios from '../../router/axios';
 
 // import DialogContainer from "./DialogContainer.vue";
@@ -12,7 +12,7 @@ import axios from '../../router/axios';
 
 const mapStore = useMapStore();
 const dialogStore = useDialogStore();
-const authStore = useAuthStore();
+// const authStore = useAuthStore();
 
 const directions = ref(null);
 let allCoordinates = [];
@@ -38,35 +38,24 @@ async function getDirections(lon, lat) {
 	}
 }
 
-function handleClose() {
-	// selectedLocation.value = "0";
-	dialogStore.hideAllDialogs();
-}
-// function handleFind() {
-// 	mapStore.flyToClosestLocationAndTriggerPopup(
-// 		availableLocations.value[+selectedLocation.value].longitude,
-// 		availableLocations.value[+selectedLocation.value].latitude
-// 	);
-// 	handleClose();
-// }
+onMounted(()=>{
+	mapStore.setCurrentLocation();
+})
+
+
 </script>
 
 <template>
-  <DialogContainer
-    dialog="mapNavigation"
-    @on-close="handleClose"
-  >
-    <div class="map-navigation">
-      <h2>Map Navigation</h2>
-      <button @click="getDirections(121.562367, 25.033490)">
-        Get Directions
-      </button>
-      <div v-if="directions">
-        <h2>Directions</h2>
-        <pre>{{ allCoordinates }}</pre>
-      </div>
+  <div class="map-navigation">
+    <h2>Map Navigation</h2>
+    <button @click="getDirections(121.562367, 25.033490)">
+      Get Directions
+    </button>
+    <div v-if="directions">
+      <h2>Directions</h2>
+      <pre>{{ allCoordinates }}</pre>
     </div>
-  </DialogContainer>
+  </div>
 </template>
 
 
