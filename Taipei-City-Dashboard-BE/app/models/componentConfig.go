@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
+	"strings"
 
 	"github.com/lib/pq"
 	"gorm.io/gorm"
@@ -63,7 +64,7 @@ type ComponentChart struct {
 /* ----- Handlers ----- */
 
 type ParkingData struct {
-	StationId int64      `json: "station_id" gorm: "column:station_id; type:varchar[]"`
+	StationId string      `json: "station_id" gorm: "column:station_id; type:varchar[]"`
 	DataTime  string     `json: "data_time"  gorm: "column:data_time;  type:timestamp; not null"`
 	AvailableCar float64   `json: "available_car" gorm: "column:available_car; type:double precision;"`
 	AvailableMotor float64   `json: "available_motor" gorm: "column:available_motor; type:double precision;"`
@@ -95,6 +96,7 @@ func createTranParkingData() *gorm.DB {
 		selectString += "tran_parking." + column + ", "
 	}
 
+	selectString = strings.TrimSuffix(selectString, ", ")
 	return DBDashboard.
 		Table("tran_parking").
 		Select(fmt.Sprint(selectString)).
