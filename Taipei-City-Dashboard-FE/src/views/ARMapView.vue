@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import '@ar-js-org/ar.js';
+import MapNavigation from "../components/dialogs/MapNavigation.vue";
 
 const loadARScripts = () => {
 	const addScript = (src) => {
@@ -22,7 +23,7 @@ onMounted(loadARScripts);
 
 <template>
   <div style="margin: 0; overflow: hidden;">
-    <a-scene
+    <!-- <a-scene
       vr-mode-ui="enabled: false"
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false;"
@@ -69,6 +70,7 @@ onMounted(loadARScripts);
         rotation-reader
         far="900000"
       />
-    </a-scene>
+    </a-scene> -->
+    <MapNavigation />
   </div>
 </template>
