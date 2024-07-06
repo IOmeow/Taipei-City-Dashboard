@@ -82,7 +82,7 @@ type ParkingData struct {
 /* ----- Handlers ----- */
 
 // createTranParkingData: get the data from DBDatabase with parking data from tran_parking and tran_parking_apacity_realtime 
-func createTranParkingData() *gorm.DB{
+func createTranParkingData() *gorm.DB {
 	selectRealtimeColumns := []string{
 		"station_id", "data_time", "available_car", "available_motor", "charge_spot_count", "standby_spot_count"}
 	selectInfoColumn := []string{
@@ -92,6 +92,7 @@ func createTranParkingData() *gorm.DB{
 		selectString += "tran_parking_capacity_realtime." + column + ", "
 	}
 	for _, column := range selectInfoColumn {
+		selectString += "tran_parking." + column + ", "
 		selectString += "tran_parking." + column + ", "
 	}
 
@@ -103,14 +104,14 @@ func createTranParkingData() *gorm.DB{
 		Order("tran_parking_capacity_realtime.station_id")
 }
 
-func GetAllParkingData() (parkingData ParkingData, err error){
+func GetAllAllParkingData() (parkingDatas []ParkingData, err error){
 	tempDB := createTranParkingData()
 
-	err = tempDB.Error
+	err = tempDB.Find(&parkingDatas).Error
 	if err != nil {
-		return parkingData, err
+		return parkingDatas, err
 	}
-	return parkingData, nil
+	return parkingDatas, nil
 }
 
 
