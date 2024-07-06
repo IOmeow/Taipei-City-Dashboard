@@ -55,7 +55,7 @@ type ComponentMap struct {
 
 // ComponentChart is the model for the component_charts table.
 type ComponentChart struct {
-	Index string         `json:"index"      gorm:"column:index;type:varchar;primaryKey"     `
+	Index string         `json:"index" gorm:"column:index;type:varchar;primaryKey"     `
 	Color pq.StringArray `json:"color" gorm:"column:color;type:varchar[]"`
 	Types pq.StringArray `json:"types" gorm:"column:types;type:varchar[]"`
 	Unit  string         `json:"unit" gorm:"column:unit;type:varchar"`
@@ -88,7 +88,8 @@ func createTranParkingData() *gorm.DB {
 		"station_id", "data_time", "available_car", "available_motor", "charge_spot_count", "standby_spot_count"}
 	selectInfoColumn := []string{
 		 "name", "summary", "addr", "total_car", "total_motor", "fare_info", "entrance_coord", "lng", "lat"}
-	selectString := ""
+	
+	selectString = strings.TrimSuffix(selectString, ", ")
 	for _, column := range selectRealtimeColumns { 
 		selectString += "tran_parking_capacity_realtime." + column + ", "
 	}
@@ -105,7 +106,7 @@ func createTranParkingData() *gorm.DB {
 		Order("tran_parking_capacity_realtime.station_id")
 }
 
-func GetAllParkingData() (parkingDatas []ParkingData, err error){
+func GetAllAllParkingData() (parkingDatas []ParkingData, err error){
 	tempDB := createTranParkingData()
 
 	err = tempDB.Find(&parkingDatas).Error

@@ -2,9 +2,11 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { defineStore } from "pinia";
 import { useMapStore } from "../../store/mapStore";
 import { useDialogStore } from "../../store/dialogStore";
 import { useAuthStore } from "../../store/authStore";
+import { useContentStore } from "../../store/contentStore";
 import axios from '../../router/axios';
 
 // import DialogContainer from "./DialogContainer.vue";
@@ -13,42 +15,72 @@ import axios from '../../router/axios';
 const mapStore = useMapStore();
 const dialogStore = useDialogStore();
 const authStore = useAuthStore();
+const contentStore = useContentStore();
 
 const directions = ref(null);
 let allCoordinates = [];
 
-async function getDirections(lon, lat) {
-	const MAPBOXTOKEN = import.meta.env.VITE_MAPBOXTOKEN;
-	const start = mapStore.userLocation.longitude + "," + mapStore.userLocation.latitude;
-	const end = String(lon) + "," + String(lat);
-	const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${start};${end}?alternatives=true&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${MAPBOXTOKEN}`;
+export const useMapARStore = defineStore('mapAR', {
+    state: () => ({
+        allCoordinates: [],
+        MAPTOKEN: import.meta.env.VITE_MAPBOXTOKEN,
+        start: "",
+        apiUrl: "",
+        directions: null,
 
-	try {
-		const response = await axios.get(url);
-    	directions.value = response.data;
-		directions.value.routes.forEach(route => {
-			route.legs.forEach(leg => {
-				leg.steps.forEach(step => {
-					allCoordinates = allCoordinates.concat(step.geometry.coordinates);
-				});
-			});
-		});
-	} catch (error) {
-		console.error('Error fetching directions:', error);
-	}
-}
+    }),
+    actions: {
+        initLocation(){
+            this.start = mapStore.useLocation.longtitude + "," + mapStore.userLocation.latitude;
+        },
+        async getDirections(lon, lat, {commit}){
+              this.end = String(lon) + "," + String(lat);
+              apiUrl = 'https://api.mapbox.com/directions/v5/mapbox/walking/${this.start};${this.end}?alternatives=true&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${this.MAPBOXTOKEN}`;'
+              axios
+                  .get(apiURL)
+                  .then((res) => {
+                      if(res.status == 200){
+                          commit('setDirection', res.data)
+                      }
+                  })
+                  .catch((err) =>{
+                      console.log("Error fetching direction:" + err);
+                  })  
+          }
+    },
+    mutations: {
+        setDirection: (state, data) => state.directions = data
+    }
+})
 
-function handleClose() {
-	// selectedLocation.value = "0";
-	dialogStore.hideAllDialogs();
-}
-// function handleFind() {
-// 	mapStore.flyToClosestLocationAndTriggerPopup(
-// 		availableLocations.value[+selectedLocation.value].longitude,
-// 		availableLocations.value[+selectedLocation.value].latitude
-// 	);
-// 	handleClose();
+const mapARStore = useMapARStore();
+onMounted = (() => {
+    mapARStore.initLocation();
+    contentStore.getAllParkingData();
+})
+
+// async function getDirections(lon, lat) {
+// 	const MAPBOXTOKEN = import.meta.env.VITE_MAPBOXTOKEN;
+// 	const start = mapStore.userLocation.longitude + "," + mapStore.userLocation.latitude;
+// 	const end = String(lon) + "," + String(lat);
+// 	const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${start};${end}?alternatives=true&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${MAPBOXTOKEN}`;
+
+// 	try {
+// 		const response = await axios.get(url);
+//     directions.value = response.data;
+// 		directions.value.routes.forEach(route => {
+// 			route.legs.forEach(leg => {
+// 				leg.steps.forEach(step => {
+// 					allCoordinates = allCoordinates.concat(step.geometry.coordinates);
+// 				});
+// 			});
+// 		});
+// 	} catch (error) {
+// 		console.error('Error fetching directions:', error);
+// 	}
 // }
+
+
 </script>
 
 <template>
@@ -56,9 +88,10 @@ function handleClose() {
     dialog="mapNavigation"
     @on-close="handleClose"
   >
+  <div>{{ contentStore.parkingDatas }}</div>
     <div class="map-navigation">
       <h2>Map Navigation</h2>
-      <button @click="getDirections(121.562367, 25.033490)">
+      <button @click="mapARStore.getDirections(121.562367, 25.033490)">
         Get Directions
       </button>
       <div v-if="directions">

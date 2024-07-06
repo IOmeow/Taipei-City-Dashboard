@@ -39,7 +39,7 @@ const routes = [
 		name: "mapview",
 		component: MapView,
 	},
-	{
+	{ // armap
 		path: "/armap",
 		name: "armap",
 		component: ARMapView,
