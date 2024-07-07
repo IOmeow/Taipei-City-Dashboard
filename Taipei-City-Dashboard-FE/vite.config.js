@@ -4,7 +4,7 @@ import viteCompression from "vite-plugin-compression";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [vue(), viteCompression()],
+	plugins: [vue({ template:{ compilerOptions: { isCustomElement: tag => tag.startsWith('a-')}}}), viteCompression()],
 	build: {
 		rollupOptions: {
 			output: {

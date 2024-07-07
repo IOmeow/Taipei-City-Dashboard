@@ -18,6 +18,8 @@ import ComponentView from "../views/ComponentView.vue";
 import ComponentInfoView from "../views/ComponentInfoView.vue";
 import EmbedView from "../views/EmbedView.vue";
 import ARMapView from "../views/ARMapView.vue";
+import ParkingView from "../views/ParkingView.vue";
+// import ARScene from "../views/ARScene.vue";
 
 const routes = [
 	{
@@ -43,6 +45,16 @@ const routes = [
 		path: "/armap",
 		name: "armap",
 		component: ARMapView,
+	},
+	// {
+	// 	path: "/arscene",
+	// 	name: "arscene",
+	// 	component: ARScene,
+	// },
+	{
+		path: "/parking", // parking JSON data 
+		name: "parking",
+		component: ParkingView,
 	},
 	{
 		path: "/component",

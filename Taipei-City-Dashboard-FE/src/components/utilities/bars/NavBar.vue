@@ -38,6 +38,9 @@ const linkQuery = computed(() => {
           <h1>{{ VITE_APP_TITLE }}</h1>
           <h2>Taipei City Dashboard</h2>
         </div>
+		<div id="mobile-ar-map">
+          <a href="https://iomeow.github.io/SteamSouthYo/" target="_blank">AR</a>
+		</div>
       </div>
     </a>
     <div
@@ -175,6 +178,13 @@ const linkQuery = computed(() => {
 </template>
 
 <style scoped lang="scss">
+#mobile-ar-map {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 60px;
+	padding: .5em;
+}
 .navbar {
 	height: 60px;
 	width: 100vw;

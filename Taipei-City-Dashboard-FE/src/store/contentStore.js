@@ -22,7 +22,7 @@ export const useContentStore = defineStore("content", {
 		components: [],
 		// Picks out the components that are map layers and stores them here
 		mapLayers: [],
-		// Parking Data 
+		// Parking lot data
 		parkingDatas: [],
 		// Picks out the favorites dashboard
 		favorites: null,
@@ -292,8 +292,9 @@ export const useContentStore = defineStore("content", {
 		},
 		async getAllParkingData(params){
 			const response = await http.get('/parking/', {
-				params,
+				params
 			});
+
 			this.parkingDatas = response.data.data;
 		},
 		// 2. Get the info of a single component (used in /component/:index)
