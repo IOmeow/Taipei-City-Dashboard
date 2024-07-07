@@ -1,35 +1,56 @@
-# <img src='Taipei-City-Dashboard-FE/src/assets/images/TUIC.svg' height='28'> Taipei City Dashboard
+# {A R你找得到車位嗎}
 
-## Introduction
+> **競賽議題 & 子議題、專案簡介、使用資源為必填**
 
-Taipei City Dashboard is a data visualization platform developed by [Taipei Urban Intelligence Center (TUIC)](https://tuic.gov.taipei/en).
+## 競賽議題 & 子議題
+- 團隊名稱：{ 蒸楠酉 }
+- 成員姓名：{游雅淇}, {黃安榕}, {蔣侑辰}, {陳威達}
+- 競賽議題：{公創新世代：學生力量與科技共創公民參與}
+    - 子議題：{智慧城市 X 臺北市政府資訊局}
 
-Our main goal is to create a comprehensive data visualization tool to assist in Taipei City policy decisions. This was achieved through the first version of the Taipei City Dashboard, which displayed a mix of internal and open data, seamlessly blending statistical and geographical data.
 
-Fast forward to mid-2023, as Taipei City’s open data ecosystem matured and expanded, our vision gradually expanded as well. We aimed not only to aid policy decisions but also to keep citizens informed about the important statistics of their city. Given the effectiveness of this tool, we also hoped to publicize the codebase for this project so that any relevant organization could easily create a similar data visualization tool of their own.
+### 專案簡介
+- 用途/功能：
+    本專案旨在打造一個以台北市為核心的智慧儀表板系統，透過資料端串接的方式，實時提供停車場資訊。主要目的是解決台北市民或訪客在尋找停車位時的困擾，並提升整體停車體驗。
+- 目標客群&使用情境：
+    - 台北市民：
+      - 日常駕駛的市民，特別是需要頻繁在市區內辦事、購物或探訪的駕駛者。
+      - 有車族群，尤其是經常遇到停車困難的駕駛者。
+    - 外地訪客：
+      - 前往台北市旅遊、出差或短期居住的外地駕駛者，幫助他們在陌生的城市環境中迅速找到合適的停車位。
+    - 商業用戶：
+      - 配送或物流業者，需要快速找到停車位以提高工作效率。
+      - 計程車、共享汽車等需要頻繁停車的商業駕駛者。
+    - 智能交通與城市管理者：
+      - 關注智慧城市建設的政府部門及相關管理機構。
+      - 希望通過數據分析和技術手段提升城市交通運行效率的研究者和開發者。
+- 操作方式：
+    - 環境設置
+        1. 可以看到 .env 檔案新增了兩個 API，
+            * OPENAI_API_KEY<br>
+            此為必需新增的 API，否則無法與智慧城市對話。
+            * LANGCHAIN_API_KEY<br>
+            此為開發用 API，可以透過 LangSmith 看清楚整體 Chain 流程。可加可不加
+        2. 必須把修改後的 .env 檔案複製進 Taipei-City-Dashboard-AI 資料夾裡
+    - 使用者操作方式<br>
+        只需點擊智慧城市按鈕，之後並可與之對話。
 
-Our dashboard, made yours.
+### 使用資源
+- 企業資源：
+    - { MapBox }<br>
+    導航功能。
+- 公開資源：
+    - { ar.js }<br>
+    AR生成於網頁與GPS結合。
 
-Based on the above vision, we decided to begin development on Taipei City Dashboard 2.0. Unlike its predecessor, Taipei City Dashboard 2.0 will be a public platform instead of an internal tool. The codebase for Taipei City Dashboard will also be open-sourced, inviting all interested parties to participate in the development of this platform.
+### 你還想分享的事情
+- 開發過程
+  - 我們在後端建立連接停車場資訊的全新API
+  - 前端串接AR問題超大，最後使用暴力破解法連接到自行製作的Github Page [SteamSouthYo](https://iomeow.github.io/SteamSouthYo/)
+- 遇到的困難
+  - 原本以為只要串接API就好了，但是儀表板資源極為複雜，API串接方式研究許久
+  - 原本以為只要AR只有建模上的困難，但單純要與儀表板Vue框架做結合就產生超級無敵多問題
 
-We have since released Taipei City Dashboard 2.0 to the general public. From now on, you will be able to suggest features and changes to Taipei City Dashboard and develop the platform alongside us. We are excited for you to join Taipei City Dashboard’s journey!
+### 成果展示
 
-Please refer to the docs for the [Chinese Version](https://tuic.gov.taipei/documentation/front-end/introduction) (and click on the "switch languages" icon in the top right corner).
-
-[Official Site](https://citydashboard.taipei) | [License](https://github.com/tpe-doit/Taipei-City-Dashboard/blob/main/LICENSE) | [Code of Conduct](https://github.com/tpe-doit/Taipei-City-Dashboard/blob/main/.github/CODE_OF_CONDUCT.md) | [Contribution Guide](https://tuic.gov.taipei/documentation/front-end/contribution-overview)
-
-## Quick Start
-
-Please refer to the [Docs](https://tuic.gov.taipei/documentation/front-end/project-setup) for the quick start guide.
-
-## Documentation
-
-Check out the complete documentation for Taipei City Dashboard [here](https://tuic.gov.taipei/documentation).
-
-## Contributors
-
-Many thanks to the contributors to this project!
-
-<a href="https://github.com/tpe-doit/Taipei-City-Dashboard/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=tpe-doit/Taipei-City-Dashboard" />
-</a>
+> SITCON Hackathon 2024
