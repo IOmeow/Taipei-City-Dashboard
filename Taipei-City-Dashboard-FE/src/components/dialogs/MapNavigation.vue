@@ -5,13 +5,16 @@ import { ref, computed, onMounted } from "vue";
 import { useMapStore } from "../../store/mapStore";
 import { useDialogStore } from "../../store/dialogStore";
 // import { useAuthStore } from "../../store/authStore";
+import { useContentStore } from "../../store/contentStore";
 import axios from '../../router/axios';
 
 // import DialogContainer from "./DialogContainer.vue";
 // import CustomCheckBox from "../utilities/forms/CustomCheckBox.vue";
 
 const mapStore = useMapStore();
-const dialogStore = useDialogStore();
+const contentStore = useContentStore();
+
+// const dialogStore = useDialogStore();
 // const authStore = useAuthStore();
 
 const directions = ref(null);
@@ -40,6 +43,7 @@ async function getDirections(lon, lat) {
 
 onMounted(()=>{
 	mapStore.setCurrentLocation();
+	contentStore.getAllParkingData();
 })
 
 
